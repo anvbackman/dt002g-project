@@ -4,57 +4,101 @@ import java.io.IOException;
 
 public class GUI extends JFrame {
     private FetchSensorData fetchSensorData;
-    private SchoolPanel schoolPanel;
+    private JPanel mainPanel;
     private ButtonPanel buttonPanel;
     private JTextArea sensorTextArea;
     private String sensorText;
+    private final CardLayout cardLayout;
+    private final SensorPanel sensorPanel;
+    private final LunchPanel lunchPanel;
+    private final ClassroomPanel classroomPanel;
+
 //    private String text;
     public GUI(FetchSensorData fetchSensorData) throws IOException {
         this.fetchSensorData = fetchSensorData;
         setTitle("School Tool");
         setSize(800, 800);
-        setLocationRelativeTo(null); // Center on screen
+        setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);
 
-        schoolPanel = new SchoolPanel();
+        cardLayout = new CardLayout();
+        mainPanel = new JPanel(cardLayout);
+
+        // Initialize main menu and sensor view
         buttonPanel = new ButtonPanel();
+        sensorPanel = new SensorPanel();
+        lunchPanel = new LunchPanel();
+        classroomPanel = new ClassroomPanel();
 
-        // Styled sensor text area
-        sensorTextArea = new JTextArea(10, 30);
-        sensorTextArea.setFont(new Font("SansSerif", Font.PLAIN, 16));
-        sensorTextArea.setEditable(false);
-        sensorTextArea.setLineWrap(true);
-        sensorTextArea.setWrapStyleWord(true);
-        sensorTextArea.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
-        sensorTextArea.setMargin(new Insets(10, 10, 10, 10));
+        setupMainMenu(); // Connect buttons
 
-        // Scroll pane around text area
-        JScrollPane scrollPane = new JScrollPane(sensorTextArea);
-        scrollPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        mainPanel.add(buttonPanel, "menu");
+        mainPanel.add(sensorPanel, "sensor");
+        mainPanel.add(lunchPanel, "lunch");
+        mainPanel.add(classroomPanel, "classrooms");
 
-        // Add components to school panel
-        schoolPanel.add(buttonPanel, BorderLayout.NORTH);
-        schoolPanel.add(scrollPane, BorderLayout.CENTER);
-
-        add(schoolPanel);
-        setupButtonPanel();
+        add(mainPanel);
+        cardLayout.show(mainPanel, "menu"); // Start with main menu
 
         setVisible(true);
 
     }
 
-    private void setupButtonPanel() {
+    private void setupMainMenu() {
         buttonPanel.getSensorButton().addActionListener(e -> {
             try {
                 String response = fetchSensorData.sendMessage();
-                sensorTextArea.setText("Current amount of people: " + response);
-            }
-            catch (IOException ex) {
+                sensorPanel.updateSensorData("Current number of people: " + response);
+                cardLayout.show(mainPanel, "sensor");
+            } catch (IOException ex) {
+                sensorPanel.updateSensorData("Error fetching data.");
                 ex.printStackTrace();
             }
         });
+
+        buttonPanel.getLunchButton().addActionListener(e -> {
+            lunchPanel.updateLunchData("Todays Lunch is: ");
+            cardLayout.show(mainPanel, "lunch");
+        });
+
+        buttonPanel.getClassroomBookedButton().addActionListener(e -> {
+            classroomPanel.updateClassroomData("The classrooms booked is: ");
+            cardLayout.show(mainPanel, "classrooms");
+        });
+
+        // Sensor panel back button returns to menu
+        sensorPanel.getBackButton().addActionListener(e ->
+                cardLayout.show(mainPanel, "menu")
+        );
+
+        lunchPanel.getBackButton().addActionListener(e ->
+                cardLayout.show(mainPanel, "menu")
+        );
+
+        classroomPanel.getBackButton().addActionListener(e ->
+                cardLayout.show(mainPanel, "menu")
+        );
+
     }
+
+//    private void setupButtonPanel() {
+//        buttonPanel.getSensorButton().addActionListener(e -> {
+//            try {
+//                String response = fetchSensorData.sendMessage();
+//                sensorPanel.updateSensorData("Current number of people: " + response);
+//                cardLayout.show(mainPanel, "sensor");
+//            } catch (IOException ex) {
+//                sensorPanel.updateSensorData("Error fetching data.");
+//                ex.printStackTrace();
+//            }
+//        });
+//
+//        // Sensor panel back button returns to menu
+//        sensorPanel.getBackButton().addActionListener(e ->
+//                cardLayout.show(mainPanel, "menu")
+//        );
+//    }
 
     public void setSensorTextArea(String text) {
         sensorTextArea.setText(text);
