@@ -9,6 +9,7 @@ public class FetchSensorData extends JFrame {
     private Socket clientSocket;
     private PrintWriter out;
     private BufferedReader in;
+    private GUI gui;
 
     public void startConnection(String ip, int port) throws IOException {
         clientSocket = new Socket(ip, port);
