@@ -3,7 +3,7 @@ import java.awt.*;
 import java.io.IOException;
 
 public class GUI extends JFrame {
-    private FetchSensorData fetchSensorData;
+    private FetchSensorData fetchSensorData = null;
     private JPanel mainPanel;
     private ButtonPanel buttonPanel;
     private JTextArea sensorTextArea;
@@ -14,8 +14,8 @@ public class GUI extends JFrame {
     private final ClassroomPanel classroomPanel;
 
 //    private String text;
-    public GUI(FetchSensorData fetchSensorData) throws IOException {
-        this.fetchSensorData = fetchSensorData;
+    public GUI() throws IOException {
+//        this.fetchSensorData = fetchSensorData;
         setTitle("School Tool");
         setSize(800, 800);
         setLocationRelativeTo(null);
@@ -48,6 +48,10 @@ public class GUI extends JFrame {
     private void setupMainMenu() {
         buttonPanel.getSensorButton().addActionListener(e -> {
             try {
+                if (fetchSensorData == null) {
+                    fetchSensorData = new FetchSensorData();
+                    fetchSensorData.startConnection("127.0.0.1", 65432);
+                }
                 String response = fetchSensorData.sendMessage();
                 sensorPanel.updateSensorData("Current number of people: " + response);
                 cardLayout.show(mainPanel, "sensor");
@@ -67,7 +71,6 @@ public class GUI extends JFrame {
             cardLayout.show(mainPanel, "classrooms");
         });
 
-        // Sensor panel back button returns to menu
         sensorPanel.getBackButton().addActionListener(e ->
                 cardLayout.show(mainPanel, "menu")
         );
