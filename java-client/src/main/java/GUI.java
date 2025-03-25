@@ -13,27 +13,33 @@ public class GUI extends JFrame {
         this.fetchSensorData = fetchSensorData;
         setTitle("School Tool");
         setSize(800, 800);
+        setLocationRelativeTo(null); // Center on screen
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);
 
-
         schoolPanel = new SchoolPanel();
         buttonPanel = new ButtonPanel();
-        sensorTextArea = new JTextArea();
 
-        schoolPanel.add(buttonPanel, BorderLayout.NORTH);
-
+        // Styled sensor text area
+        sensorTextArea = new JTextArea(10, 30);
+        sensorTextArea.setFont(new Font("SansSerif", Font.PLAIN, 16));
         sensorTextArea.setEditable(false);
         sensorTextArea.setLineWrap(true);
         sensorTextArea.setWrapStyleWord(true);
+        sensorTextArea.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
+        sensorTextArea.setMargin(new Insets(10, 10, 10, 10));
 
-//        String response = this.fetchSensorData.sendMessage();
+        // Scroll pane around text area
+        JScrollPane scrollPane = new JScrollPane(sensorTextArea);
+        scrollPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-
-        schoolPanel.add(sensorTextArea, BorderLayout.CENTER);
+        // Add components to school panel
+        schoolPanel.add(buttonPanel, BorderLayout.NORTH);
+        schoolPanel.add(scrollPane, BorderLayout.CENTER);
 
         add(schoolPanel);
         setupButtonPanel();
+
         setVisible(true);
 
     }
