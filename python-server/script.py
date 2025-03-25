@@ -22,7 +22,16 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             data = conn.recv(1024)
             if not data:
                 break
-            conn.sendall(data)
+
+            message = data.decode().strip()
+
+            if message == "get_sensor_data":
+                count += 1
+                response = f"{count}\n"
+                conn.sendall(response.encode())
+                print("Sent count")
+            else:
+                conn.sendall(b"Unknown command\n")
 
 
 
