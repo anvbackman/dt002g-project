@@ -1,6 +1,8 @@
 import socket
 import threading
+import random
 from time import sleep
+
 
 HOST = '127.0.0.1'  # localhost
 PORT = 65432        # arbitrary non-privileged port
@@ -27,7 +29,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
 
             if message == "get_sensor_data":
                 count += 1
-                response = f"{count}\n"
+                response = f"{random.randint(0,13)}\n"
                 conn.sendall(response.encode())
                 print("Sent count")
             else:

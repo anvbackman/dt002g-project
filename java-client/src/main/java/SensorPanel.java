@@ -5,7 +5,7 @@ import java.io.IOException;
 public class SensorPanel extends JPanel {
 
     private final JTextArea sensorTextArea;
-    private final JButton backButton;
+    private final BottomBarPanel bottomBarPanel;
 
     public SensorPanel() {
         setLayout(new BorderLayout());
@@ -21,16 +21,8 @@ public class SensorPanel extends JPanel {
         JScrollPane scrollPane = new JScrollPane(sensorTextArea);
         add(scrollPane, BorderLayout.CENTER);
 
-        backButton = new JButton("Back");
-        backButton.setFont(new Font("SansSerif", Font.BOLD, 14));
-        backButton.setBackground(Color.GRAY);
-        backButton.setForeground(Color.WHITE);
-        backButton.setFocusPainted(false);
-        backButton.setPreferredSize(new Dimension(100, 40));
-        JPanel backPanel = new JPanel();
-        backPanel.add(backButton);
-
-        add(backPanel, BorderLayout.SOUTH);
+        bottomBarPanel = new BottomBarPanel();
+        add(bottomBarPanel, BorderLayout.SOUTH);
     }
 
     public void updateSensorData(String text) {
@@ -38,6 +30,6 @@ public class SensorPanel extends JPanel {
     }
 
     public JButton getBackButton() {
-        return backButton;
+        return bottomBarPanel.getBackButton();
     }
 }

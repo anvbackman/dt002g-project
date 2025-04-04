@@ -6,38 +6,47 @@ public class ButtonPanel extends JPanel {
     private final JButton sensorButton;
     private final JButton lunchButton;
     private final JButton classroomBookedButton;
+    private final JButton infoButton;
 
     public ButtonPanel() {
-        setLayout(new FlowLayout(FlowLayout.CENTER, 20, 10));
+        setLayout(new GridBagLayout());
         setBackground(new Color(240, 240, 240));
 
-        sensorButton = new JButton("Check Sensor");
-        sensorButton.setFont(new Font("SansSerif", Font.BOLD, 16));
-        sensorButton.setBackground(new Color(100, 149, 237)); // Cornflower Blue
-        sensorButton.setForeground(Color.WHITE);
-        sensorButton.setFocusPainted(false);
-        sensorButton.setPreferredSize(new Dimension(160, 40));
-        sensorButton.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(15, 15, 15, 15); // spacing between buttons
 
-        lunchButton = new JButton("Check Lunch");
-        lunchButton.setFont(new Font("SansSerif", Font.BOLD, 16));
-        lunchButton.setBackground(new Color(237, 116, 100)); // Cornflower Blue
-        lunchButton.setForeground(Color.WHITE);
-        lunchButton.setFocusPainted(false);
-        lunchButton.setPreferredSize(new Dimension(160, 40));
-        lunchButton.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+        sensorButton = createStyledButton("Check Sensor", new Color(100, 149, 237));
+        lunchButton = createStyledButton("Check Lunch", new Color(237, 116, 100));
+        classroomBookedButton = createStyledButton("Check Classroom", new Color(85, 172, 37));
+        infoButton = createStyledButton("Information", new Color(154, 37, 172));
 
-        classroomBookedButton = new JButton("Check Classroom");
-        classroomBookedButton.setFont(new Font("SansSerif", Font.BOLD, 16));
-        classroomBookedButton.setBackground(new Color(85, 172, 37)); // Cornflower Blue
-        classroomBookedButton.setForeground(Color.WHITE);
-        classroomBookedButton.setFocusPainted(false);
-        classroomBookedButton.setPreferredSize(new Dimension(160, 40));
-        classroomBookedButton.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+        // Position buttons in a 2x2 grid
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        add(sensorButton, gbc);
 
-        add(sensorButton, BorderLayout.NORTH);
-        add(lunchButton, BorderLayout.CENTER);
-        add(classroomBookedButton, BorderLayout.SOUTH);
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        add(lunchButton, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        add(classroomBookedButton, gbc);
+
+        gbc.gridx = 1;
+        gbc.gridy = 1;
+        add(infoButton, gbc);
+    }
+
+    private JButton createStyledButton(String text, Color bgColor) {
+        JButton button = new JButton(text);
+        button.setFont(new Font("SansSerif", Font.BOLD, 16));
+        button.setBackground(bgColor);
+        button.setForeground(Color.WHITE);
+        button.setFocusPainted(false);
+        button.setPreferredSize(new Dimension(250, 250));
+        button.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+        return button;
     }
 
     public JButton getSensorButton() {
@@ -50,5 +59,9 @@ public class ButtonPanel extends JPanel {
 
     public JButton getClassroomBookedButton() {
         return classroomBookedButton;
+    }
+
+    public JButton getInfoButton() {
+        return infoButton;
     }
 }

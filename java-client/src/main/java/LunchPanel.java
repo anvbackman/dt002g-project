@@ -3,8 +3,7 @@ import java.awt.*;
 
 public class LunchPanel extends JPanel {
     private final JTextArea lunchTextArea;
-    private final JButton backButton;
-
+    private final BottomBarPanel bottomBarPanel;
 
     public LunchPanel() {
         setLayout(new BorderLayout());
@@ -20,16 +19,8 @@ public class LunchPanel extends JPanel {
         JScrollPane scrollPane = new JScrollPane(lunchTextArea);
         add(scrollPane, BorderLayout.CENTER);
 
-        backButton = new JButton("Back");
-        backButton.setFont(new Font("SansSerif", Font.BOLD, 14));
-        backButton.setBackground(Color.GRAY);
-        backButton.setForeground(Color.WHITE);
-        backButton.setFocusPainted(false);
-        backButton.setPreferredSize(new Dimension(100, 40));
-        JPanel backPanel = new JPanel();
-        backPanel.add(backButton);
-
-        add(backPanel, BorderLayout.SOUTH);
+        bottomBarPanel = new BottomBarPanel();
+        add(bottomBarPanel, BorderLayout.SOUTH);
     }
 
     public void updateLunchData(String text) {
@@ -37,6 +28,6 @@ public class LunchPanel extends JPanel {
     }
 
     public JButton getBackButton() {
-        return backButton;
+        return bottomBarPanel.getBackButton();
     }
 }

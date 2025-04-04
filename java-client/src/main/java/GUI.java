@@ -12,6 +12,7 @@ public class GUI extends JFrame {
     private final SensorPanel sensorPanel;
     private final LunchPanel lunchPanel;
     private final ClassroomPanel classroomPanel;
+    private final InfoPanel infoPanel;
 
 //    private String text;
     public GUI() throws IOException {
@@ -29,6 +30,7 @@ public class GUI extends JFrame {
         buttonPanel = new ButtonPanel();
         sensorPanel = new SensorPanel();
         lunchPanel = new LunchPanel();
+        infoPanel = new InfoPanel();
         classroomPanel = new ClassroomPanel();
 
         setupMainMenu(); // Connect buttons
@@ -36,6 +38,7 @@ public class GUI extends JFrame {
         mainPanel.add(buttonPanel, "menu");
         mainPanel.add(sensorPanel, "sensor");
         mainPanel.add(lunchPanel, "lunch");
+        mainPanel.add(infoPanel, "information");
         mainPanel.add(classroomPanel, "classrooms");
 
         add(mainPanel);
@@ -71,6 +74,12 @@ public class GUI extends JFrame {
             cardLayout.show(mainPanel, "classrooms");
         });
 
+        buttonPanel.getInfoButton().addActionListener(e -> {
+            infoPanel.updateInfoData("Welcome to School Tool, an easy to use tool for you every day campus needs!\n" +
+                    "Business inquiries in at mail.com");
+            cardLayout.show(mainPanel, "information");
+        });
+
         sensorPanel.getBackButton().addActionListener(e ->
                 cardLayout.show(mainPanel, "menu")
         );
@@ -80,6 +89,10 @@ public class GUI extends JFrame {
         );
 
         classroomPanel.getBackButton().addActionListener(e ->
+                cardLayout.show(mainPanel, "menu")
+        );
+
+        infoPanel.getBackButton().addActionListener(e ->
                 cardLayout.show(mainPanel, "menu")
         );
 

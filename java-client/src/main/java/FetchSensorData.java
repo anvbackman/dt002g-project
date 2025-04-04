@@ -11,6 +11,7 @@ public class FetchSensorData extends JFrame {
     private BufferedReader in;
     private GUI gui;
 
+
     public void startConnection(String ip, int port) throws IOException {
         clientSocket = new Socket(ip, port);
         out = new PrintWriter(clientSocket.getOutputStream(), true);
@@ -23,6 +24,12 @@ public class FetchSensorData extends JFrame {
         System.out.println(response);
         return response;
     }
+
+    public Socket getClientSocket() {
+        return clientSocket;
+    }
+
+
 
     public void stopConnection() throws IOException {
         in.close();
